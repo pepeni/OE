@@ -188,7 +188,14 @@ class App:
             self.selectionMethod = self.selectionVar.get()
             self.crossMethod = self.crossVar.get()
             self.muationMethod = self.mutationVar.get()
-            #ToDo
+
+            # ToDo na podstawie informacji zbudować algorytm i go uruchomić
+
         except:
             messagebox.showerror("Incorect Data", "provided data is in incorrect format")
+
+    def solutionFound(self):
+        # TODO wyświetlić wiadomość z wynikiem, na koniec działania alorytmu
+        messagebox.showinfo("solution found")
+
 App()
