@@ -7,6 +7,7 @@ def dcUniform(parent1, parent2):
     random2 = random.randint(0, size - 1)
     xPoint1, xPoint2 = min(random1, random2), max(random1, random2)
     print(xPoint1, xPoint2)
+    print("xPoint1: ", xPoint1, " xPoint2: ", xPoint2)
     child1 = []
     child2 = []
     for i in range(size):
@@ -32,8 +33,8 @@ newInd1, newInd2 = dcUniform(ind1, ind2)
 print("Dziecko1: ", newInd1, "\nDziecko2: ", newInd2, "\n\n")
 
 
-ind1 = np.random.randint(0,2,50)
-ind2 = np.random.randint(0,2,50)
+ind1 = np.random.randint(0,2,30)
+ind2 = np.random.randint(0,2,30)
 
 print("Rodzic1: ", ind1, "\nRodzic2: ", ind2)
 newInd1, newInd2 = dcUniform(ind1, ind2)
