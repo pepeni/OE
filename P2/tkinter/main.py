@@ -13,6 +13,22 @@ class App:
         self.topLabel = tk.Label(self.root, text="Obliczenia Ewolucyjne projekt 2", font=('Arial', 18), bg="#333333", fg="white")
         self.topLabel.pack(pady=10)
 
+        functionLabel = tk.Label(self.root, text="Testowana funkcja", font=('Arial', 12), bg="#333333",
+                                  fg="white")
+        functionLabel.pack(pady=5)
+
+        functionOptions = [
+            "Funkcja 1 (1 zmienna)",
+            "Funkcja 2 (5 zmiennych)"
+        ]
+
+        self.functionVar = tk.StringVar()
+        self.functionVar.set("Funkcja 1 (1 zmienna)")
+
+        self.functionDrop = tk.OptionMenu(self.root, self.functionVar, *functionOptions)
+        self.functionDrop.pack(pady=10)
+        self.functionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=30)
+
         self.startEntry = EntryWithPlaceholder(self.root, placeholder="Punkt startowy - a")
         self.startEntry.pack(pady=5)
 
@@ -188,6 +204,7 @@ class App:
             self.selectionMethod = self.selectionVar.get()
             self.crossMethod = self.crossVar.get()
             self.muationMethod = self.mutationVar.get()
+            self.function = self.functionVar.get()
 
             # ToDo na podstawie informacji zbudować algorytm i go uruchomić
 
