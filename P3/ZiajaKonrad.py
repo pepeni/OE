@@ -1,20 +1,22 @@
 import random
+import math
 
 
-def onePointAverageX(parent1, parent2):
-    child1 = []
-    child2 = []
-    cp = random.randint(0, len(parent1)-1)
+# Wersja 1
+def geometric_crossover(parent1, parent2):
+    child = []
     for i in range(len(parent1)):
-        child1.append(parent1[i])
-        child2.append(parent2[i])
-    child1[cp] = (parent1[cp] + parent2[cp]) / 2
-    child2[cp] = (parent1[cp] + parent2[cp]) / 2
-    return child1, child2
-
-a = [1, 2, 3, 4]
-b = [5, 6, 7, 8]
-
-print(onePointAverageX(a,b))
+        if parent1[i] > 0 and parent2[i] > 0:
+            child.append(math.sqrt(parent1[i] * parent2[i]))
+        else:
+            child.append(parent1[i])
+    return child
 
 
+parent1 = [1, 2, 3, 4, 5]
+parent2 = [6, 7, 8, 9, 10]
+
+child = geometric_crossover(parent1, parent2)
+print("Parent 1:", parent1)
+print("Parent 2:", parent2)
+print("Child:", child)
