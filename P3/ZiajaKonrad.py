@@ -9,11 +9,11 @@ def geometric_crossover(parent1, parent2):
         if parent1[i] > 0 and parent2[i] > 0:
             child.append(math.sqrt(parent1[i] * parent2[i]))
         else:
-            child.append(parent1[i])
+            child.append(( parent1[i] + parent2[i] )/ 2)
     return child
 
 
-parent1 = [1, 2, 3, 4, 5]
+parent1 = [1, 2, 3, -4, 5]
 parent2 = [6, 7, 8, 9, 10]
 
 child = geometric_crossover(parent1, parent2)
