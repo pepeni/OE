@@ -8,20 +8,14 @@ def best_selection(population, fitness_function, num_selected, look_for_max = Fa
     return selected_individuals
 
 # Jak szukamy mamksimum, to zmienić look_for_max na True
-def tournament_selection(population, fitness_function, num_selected, tournament_size=4, look_for_max = False):
-    # TODO poprawić, żeby losowało wymaganą ilość
-    selected_individuals = []
-    while len(selected_individuals) < num_selected:
-        # Wybierz losowo osobników na turniej
-        tournament = random.sample(population, tournament_size)
-        # Oblicz wartość funkcji dla każdego osobnika na turnieju
-        tournament_fitness = [fitness_function(individual) for individual in tournament]
-        # Wybierz zwycięzcę turnieju (osobnika z najwyższą wartością funkcji)
-        if look_for_max:
-            winner_index = tournament_fitness.index(max(tournament_fitness))
-        else:
-            winner_index = tournament_fitness.index(min(tournament_fitness))
-        selected_individuals.append(tournament[winner_index])
-    return selected_individuals
-
-# Jak szukamy mamksimum, to zmienić look_for_max na True
+def tournament_selection(population, fitness_function, tournament_size=3, look_for_max=False):
+    # TODO poprawić, żeby losowało wymaganą ilość o ile potrzebne?
+    winners = []
+    population_copy = list(population)
+    while population_copy:
+        tournament_individuals = random.sample(population_copy, min(tournament_size, len(population_copy)))
+        winner = max(tournament_individuals, key=fitness_function) if look_for_max else min(tournament_individuals, key=fitness_function)
+        winners.append(winner)
+        for i in tournament_individuals:
+            population_copy.remove(i)
+    return winners
