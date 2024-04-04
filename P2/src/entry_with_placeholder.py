@@ -1,4 +1,6 @@
 import tkinter as tk
+
+
 class EntryWithPlaceholder(tk.Entry):
     def __init__(self, master=None, placeholder="PLACEHOLDER", color='grey', variable=None):
         super().__init__(master, textvariable=variable, bg="#333333", fg="white", font=('Arial', 12))
