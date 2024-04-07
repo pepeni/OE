@@ -3,11 +3,15 @@ import math
 
 class FitnessFunctionMethods:
     @staticmethod
-    def func_pow_x(values: list[float]):
-        return [x ** 2 for x in values]
+    def simple_func(values: list[float]):
+        if len(values) != 1:
+            raise AttributeError
+        return [x ** 2 + 3 for x in values]
 
     @staticmethod
     def goldstein_and_price(values: list[float]):
+        if len(values) != 2:
+            raise AttributeError
         x0, x1 = values
         term1 = 1 + (x0 + x1 + 1) ** 2 * (19 - 14 * x0 + 3 * x0 ** 2 - 14 * x1 + 6 * x0 * x1 + 3 * x1 ** 2)
         term2 = 30 + (2 * x0 - 3 * x1) ** 2 * (18 - 32 * x0 + 12 * x0 ** 2 + 48 * x1 - 36 * x0 * x1 + 27 * x1 ** 2)
