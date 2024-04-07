@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from tkinter import messagebox
 
@@ -74,7 +75,7 @@ class AppGui:
         self.endEntry = EntryWithPlaceholder(self.root, placeholder="Punkt końcowy - b")
         self.endEntry.pack(pady=5)
 
-        self.populationNumberEntry = EntryWithPlaceholder(self.root, placeholder="Liczba populacji")
+        self.populationNumberEntry = EntryWithPlaceholder(self.root, placeholder="Wielkosc populacji")
         self.populationNumberEntry.pack(pady=5)
 
         self.bitNumberEntry = EntryWithPlaceholder(self.root, placeholder="Liczba bitów")
@@ -159,7 +160,7 @@ class AppGui:
             "Ilosc zmiennych"
             "Punkt startowy - a",
             "Punkt końcowy - b",
-            "Liczba populacji",
+            "Wielkosc populacji",
             "Liczba bitów",
             "Liczba epok",
             "Liczba osobników wyłoniona z selekcji turniejowej lub best",
@@ -238,13 +239,14 @@ class AppGui:
             population.set_mutation_method(mutationOptions[self.mutationVar.get()])
             population.set_inversion_method(inversionOptions[self.inversionVar.get()])
 
-            print("--- Prezentacja populacji poczatkowej ---")
-            population.print_individuals()
+            start_time = time.time()
 
             population.evolve()
 
-            print("\n\n--- Prezentacja populacji koncowej ---")
-            population.print_individuals()
+            end_time = time.time()
+
+            self.executionTime = end_time - start_time
+            self.solutionFound(population.get_best_individual().fitness_value)
 
             print("\n\n---Najlepsze osobniki z kazdej epoki---")
             population.print_best_individuals()
@@ -255,6 +257,5 @@ class AppGui:
         except:
             messagebox.showerror("Incorect Data", "Provided data is in incorrect format")
 
-    def solutionFound(self):
-        # TODO wyświetlić wiadomość z wynikiem, na koniec działania alorytmu
-        messagebox.showinfo("solution found")
+    def solutionFound(self, result: float):
+        messagebox.showinfo("Solution found", f"Result: {result}\nTime: {self.executionTime}")
