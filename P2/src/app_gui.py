@@ -1,7 +1,40 @@
 import tkinter as tk
 from tkinter import messagebox
 
+from src.algorithms.crossover_methods import CrossoverMethods
+from src.algorithms.fitness_function_methods import FitnessFunctionMethods
+from src.algorithms.mutation_methods import MutationMethods
+from src.algorithms.selection_methods import SelectionMethods
 from src.entry_with_placeholder import EntryWithPlaceholder
+from src.fitness_function import FitnessFunction
+from src.population import Population
+
+functionOptions = {
+    "Funkcja 1 (2 zmienne)": FitnessFunctionMethods.goldstein_and_price,
+    "Funkcja 2 (n zmiennych)": FitnessFunctionMethods.weierstrass
+}
+
+selectionOptions = {
+    "Best": SelectionMethods.best_selection,
+    # "Roulette": SelectionMethods.tournament_selection,
+    # "Tournament": SelectionMethods.oulette_wheel_selection
+}
+
+crossOptions = {
+    "Single Point": CrossoverMethods.single_point_crossover,
+    "Double Point": CrossoverMethods.double_point_crossover,
+    "Triple Point": CrossoverMethods.triple_point_crossover,
+    "Uniform": CrossoverMethods.uniform_crossover,
+    "Discrete": CrossoverMethods.discrete_crossover,
+    "Dissociated": CrossoverMethods.dissociated_crossover,
+    "Difference based": CrossoverMethods.differences_based_crossover
+}
+
+mutationOptions = {
+    "Edge": MutationMethods.edge_mutation,
+    "Single Point": MutationMethods.single_point_mutation,
+    "Double Point": MutationMethods.double_point_mutation
+}
 
 
 class AppGui:
@@ -19,15 +52,10 @@ class AppGui:
                                  fg="white")
         functionLabel.pack(pady=5)
 
-        functionOptions = [
-            "Funkcja 1 (1 zmienna)",
-            "Funkcja 2 (5 zmiennych)"
-        ]
-
         self.functionVar = tk.StringVar()
-        self.functionVar.set("Funkcja 1 (1 zmienna)")
+        self.functionVar.set("Funkcja 1 (2 zmienne)")
 
-        self.functionDrop = tk.OptionMenu(self.root, self.functionVar, *functionOptions)
+        self.functionDrop = tk.OptionMenu(self.root, self.functionVar, *functionOptions.keys())
         self.functionDrop.pack(pady=10)
         self.functionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=30)
 
@@ -46,12 +74,12 @@ class AppGui:
         self.epochNumberEntry = EntryWithPlaceholder(self.root, placeholder="Liczba epok")
         self.epochNumberEntry.pack(pady=5)
 
-        self.individualsNumberEntry = EntryWithPlaceholder(self.root,
-                                                           placeholder="Liczba osobników wyłoniona z selekcji turniejowej lub best")
-        self.individualsNumberEntry.pack(pady=5)
+        self.selectionPercentEntry = EntryWithPlaceholder(self.root,
+                                                          placeholder="Procent osobników z selekcji")
+        self.selectionPercentEntry.pack(pady=5)
 
-        self.eliteStrategyNumber = EntryWithPlaceholder(self.root, placeholder="Liczba elite strategy")
-        self.eliteStrategyNumber.pack(pady=5)
+        self.elitePercentEntry = EntryWithPlaceholder(self.root, placeholder="Procent elite strategy")
+        self.elitePercentEntry.pack(pady=5)
 
         self.xProbabilityEntry = EntryWithPlaceholder(self.root, placeholder="Prawd. krzyżowania")
         self.xProbabilityEntry.pack(pady=5)
@@ -67,16 +95,10 @@ class AppGui:
                                   fg="white")
         selectionLabel.pack(pady=5)
 
-        selectionOptions = [
-            "Best",
-            "Roulette",
-            "Tournament"
-        ]
-
         self.selectionVar = tk.StringVar()
         self.selectionVar.set("Best")
 
-        self.selectionDrop = tk.OptionMenu(self.root, self.selectionVar, *selectionOptions)
+        self.selectionDrop = tk.OptionMenu(self.root, self.selectionVar, *selectionOptions.keys())
         self.selectionDrop.pack()
         self.selectionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
 
@@ -84,19 +106,10 @@ class AppGui:
                               fg="white")
         crossLabel.pack(pady=5)
 
-        crossOptions = [
-            "Single Point",
-            "Double Point",
-            "Triple Point",
-            "Uniform",
-            "Discrete",
-            "Dissociated"
-        ]
-
         self.crossVar = tk.StringVar()
         self.crossVar.set("Single Point")
 
-        self.crossDrop = tk.OptionMenu(self.root, self.crossVar, *crossOptions)
+        self.crossDrop = tk.OptionMenu(self.root, self.crossVar, *crossOptions.keys())
         self.crossDrop.pack()
         self.crossDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
 
@@ -104,19 +117,10 @@ class AppGui:
                                  fg="white")
         mutationLabel.pack(pady=5)
 
-        mutationOptions = [
-            "Single Point",
-            "Double Point",
-            "Triple Point",
-            "Uniform",
-            "Discrete",
-            "Dissociated"
-        ]
-
         self.mutationVar = tk.StringVar()
-        self.mutationVar.set("Single Point")
+        self.mutationVar.set("Edge")
 
-        self.mutationDrop = tk.OptionMenu(self.root, self.mutationVar, *mutationOptions)
+        self.mutationDrop = tk.OptionMenu(self.root, self.mutationVar, *mutationOptions.keys())
         self.mutationDrop.pack()
         self.mutationDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
 
@@ -149,12 +153,12 @@ class AppGui:
             if self.startEntry.get() not in placeholders:
                 self.start = float(self.startEntry.get())
             else:
-                self.start = 0.0
+                self.start = 0
 
             if self.endEntry.get() not in placeholders:
                 self.end = float(self.endEntry.get())
             else:
-                self.end = 0.0
+                self.end = 0
 
             if self.populationNumberEntry.get() not in placeholders:
                 self.populationNumber = int(self.populationNumberEntry.get())
@@ -171,15 +175,15 @@ class AppGui:
             else:
                 self.epochNumber = 50
 
-            if self.individualsNumberEntry.get() not in placeholders:
-                self.individualsNumber = int(self.individualsNumberEntry.get())
+            if self.selectionPercentEntry.get() not in placeholders:
+                self.selectionPercent = float(self.selectionPercentEntry.get())
             else:
-                self.individualsNumber = 50
+                self.selectionPercent = 0.5
 
-            if self.eliteStrategyNumber.get() not in placeholders:
-                self.eliteNumber = int(self.eliteStrategyNumber.get())
+            if self.elitePercentEntry.get() not in placeholders:
+                self.elitePercent = float(self.elitePercentEntry.get())
             else:
-                self.eliteNumber = 2
+                self.elitePercent = 0.1
 
             if self.xProbabilityEntry.get() not in placeholders:
                 self.xProbability = float(self.xProbabilityEntry.get())
@@ -196,12 +200,26 @@ class AppGui:
             else:
                 self.inversionProbability = 0.0
 
-            self.selectionMethod = self.selectionVar.get()
-            self.crossMethod = self.crossVar.get()
-            self.muationMethod = self.mutationVar.get()
-            self.function = self.functionVar.get()
+            population = Population(size=self.populationNumber, number_of_variables=2, chromosome_length=self.bitNumber,
+                                    min_value=self.start, max_value=self.end,
+                                    fitness_function=FitnessFunction(functionOptions[self.functionVar.get()]),
+                                    epochs=self.epochNumber, selection_percent=self.selectionPercent,
+                                    elite_percent=self.elitePercent, crossover_prob=self.xProbability,
+                                    mutation_prob=self.mProbability, inverse_prob=self.inversionProbability)
+            population.set_selection_method(selectionOptions[self.selectionVar.get()])
+            population.set_crossover_method(crossOptions[self.crossVar.get()])
+            population.set_mutation_method(mutationOptions[self.mutationVar.get()])
 
-            # ToDo na podstawie informacji zbudować algorytm i go uruchomić
+            print("--- Prezentacja populacji poczatkowej ---")
+            population.print_individuals()
+
+            population.evolve()
+
+            print("\n\n--- Prezentacja populacji koncowej ---")
+            population.print_individuals()
+
+            print("\n\n---Najlepsze osobniki z kazdej epoki---")
+            population.print_best_individuals()
 
         except:
             messagebox.showerror("Incorect Data", "provided data is in incorrect format")

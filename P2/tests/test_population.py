@@ -15,7 +15,9 @@ class TestPopulation(unittest.TestCase):
         self.min_value = -10
         self.max_value = 10
         self.fitness_function = FitnessFunction(func_x)
-        self.population = Population(self.population_size, self.number_of_variables, self.chromosome_length, self.min_value, self.max_value, self.fitness_function)
+        self.epochs = 100
+        self.population = Population(self.population_size, self.number_of_variables, self.chromosome_length,
+                                     self.min_value, self.max_value, self.fitness_function, self.epochs)
 
     def test_population_size(self):
         self.assertEqual(len(self.population.individuals), self.population_size)
