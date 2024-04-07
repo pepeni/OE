@@ -18,8 +18,8 @@ functionOptions = {
 
 selectionOptions = {
     "Best": SelectionMethods.best_selection,
-    # "Roulette": SelectionMethods.tournament_selection,
-    # "Tournament": SelectionMethods.roulette_wheel_selection
+    "Tournament": SelectionMethods.tournament_selection,
+    "Roulette": SelectionMethods.roulette_wheel_selection
 }
 
 crossOptions = {

@@ -9,10 +9,10 @@ def get_sorted_individuals(individuals: list[Individual], look_for_max: bool) ->
     return sorted(individuals, key=lambda individual: individual.fitness_value, reverse=look_for_max)
 
 
-def select_random_parents(selected_individuals):
-    index1, index2 = sample(range(len(selected_individuals)), 2)
-    parent1 = selected_individuals[index1]
-    parent2 = selected_individuals[index2]
+def select_random_parents(individuals: list[Individual]) -> tuple[Individual, Individual]:
+    index1, index2 = sample(range(len(individuals)), 2)
+    parent1 = individuals[index1]
+    parent2 = individuals[index2]
     return parent1, parent2
 
 
@@ -46,6 +46,7 @@ class Population:
             )
             for _ in range(size)
         ]
+        self.elite_individuals = None
 
         self.selection_method = None
         self.crossover_method = None
@@ -86,14 +87,19 @@ class Population:
     def invert_individual(self, individual: Individual, probability: float) -> None:
         return self.inversion_method(individual, probability)
 
-    def get_best_individual(self):
+    def get_best_individual(self) -> Individual:
         return get_sorted_individuals(self.individuals, self.look_for_max)[0]
+
+    def set_elite_individuals(self) -> None:
+        sorted_individuals = get_sorted_individuals(self.individuals, self.look_for_max)
+        self.elite_individuals = sorted_individuals[:self.number_elite]
+        self.individuals = sorted_individuals[self.number_elite:]
 
     def evolve(self):
         for epoch in range(self.epochs):
+            self.set_elite_individuals()
             selected_individuals = self.select_individuals()
             self.individuals = []
-            elite_individuals = get_sorted_individuals(selected_individuals, self.look_for_max)[:self.number_elite]
 
             while len(self.individuals) < self.size - self.number_elite:
                 parent1, parent2 = select_random_parents(selected_individuals)
@@ -108,7 +114,7 @@ class Population:
                 self.mutate_individual(individual, self.mutation_prob)
                 self.invert_individual(individual, self.inversion_prob)
 
-            for individual in elite_individuals:
+            for individual in self.elite_individuals:
                 self.individuals.append(individual)
 
             self.best_individuals.append(self.get_best_individual())
