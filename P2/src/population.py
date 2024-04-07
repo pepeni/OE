@@ -19,7 +19,7 @@ def select_random_parents(selected_individuals):
 class Population:
     def __init__(self, size: int, number_of_variables: int, chromosome_length: int, min_value: int, max_value: int,
                  fitness_function: FitnessFunction, epochs: int, selection_percent=0.5, elite_percent=0.1,
-                 crossover_prob=0.8, mutation_prob=0.2, inverse_prob=0.2, look_for_max=False) -> None:
+                 crossover_prob=0.8, mutation_prob=0.1, inversion_prob=0.05, look_for_max=False) -> None:
         self.size = size
         self.chromosome_length = chromosome_length
         self.min_value = min_value
@@ -32,7 +32,7 @@ class Population:
         self.number_elite = ceil(elite_percent * self.number_to_select)
         self.crossover_prob = crossover_prob
         self.mutation_prob = mutation_prob
-        self.inverse_prob = inverse_prob
+        self.inversion_prob = inversion_prob
         self.look_for_max = look_for_max
         self.best_individuals = []
 
@@ -50,6 +50,7 @@ class Population:
         self.selection_method = None
         self.crossover_method = None
         self.mutation_method = None
+        self.inversion_method = None
 
     def get_individual(self, index) -> Individual:
         return self.individuals[index]
@@ -69,6 +70,9 @@ class Population:
     def set_mutation_method(self, method) -> None:
         self.mutation_method = method
 
+    def set_inversion_method(self, method) -> None:
+        self.inversion_method = method
+
     def select_individuals(self) -> list[Individual]:
         return self.selection_method(self.individuals, self.number_to_select)
 
@@ -78,6 +82,9 @@ class Population:
 
     def mutate_individual(self, individual: Individual, probability: float) -> None:
         return self.mutation_method(individual, probability)
+
+    def invert_individual(self, individual: Individual, probability: float) -> None:
+        return self.inversion_method(individual, probability)
 
     def get_best_individual(self):
         return get_sorted_individuals(self.individuals, self.look_for_max)[0]
@@ -99,8 +106,7 @@ class Population:
 
             for individual in self.individuals:
                 self.mutate_individual(individual, self.mutation_prob)
-
-            '''Inwersja TODO'''
+                self.invert_individual(individual, self.inversion_prob)
 
             for individual in elite_individuals:
                 self.individuals.append(individual)

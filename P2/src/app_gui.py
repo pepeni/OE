@@ -3,6 +3,7 @@ from tkinter import messagebox
 
 from src.algorithms.crossover_methods import CrossoverMethods
 from src.algorithms.fitness_function_methods import FitnessFunctionMethods
+from src.algorithms.inversion_methods import InversionMethods
 from src.algorithms.mutation_methods import MutationMethods
 from src.algorithms.selection_methods import SelectionMethods
 from src.entry_with_placeholder import EntryWithPlaceholder
@@ -10,14 +11,15 @@ from src.fitness_function import FitnessFunction
 from src.population import Population
 
 functionOptions = {
-    "Funkcja 1 (2 zmienne)": FitnessFunctionMethods.goldstein_and_price,
-    "Funkcja 2 (n zmiennych)": FitnessFunctionMethods.weierstrass
+    "Goldstein and Price (2 variables)": FitnessFunctionMethods.goldstein_and_price,
+    "Weierstrass (n variables)": FitnessFunctionMethods.weierstrass,
+    "Simple func (1 variable)": FitnessFunctionMethods.simple_func
 }
 
 selectionOptions = {
     "Best": SelectionMethods.best_selection,
     # "Roulette": SelectionMethods.tournament_selection,
-    # "Tournament": SelectionMethods.oulette_wheel_selection
+    # "Tournament": SelectionMethods.roulette_wheel_selection
 }
 
 crossOptions = {
@@ -36,28 +38,35 @@ mutationOptions = {
     "Double Point": MutationMethods.double_point_mutation
 }
 
+inversionOptions = {
+    "Simple inversion": InversionMethods.double_point_inversion
+}
+
 
 class AppGui:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.geometry("500x800")
+        self.root.geometry("500x850")
         self.root.title("P2 OE app")
         self.root.configure(bg="#333333")
 
-        self.topLabel = tk.Label(self.root, text="Obliczenia Ewolucyjne projekt 2", font=('Arial', 18), bg="#333333",
+        self.topLabel = tk.Label(self.root, text="Obliczenia Ewolucyjne projekt 2", font=('Arial', 16), bg="#333333",
                                  fg="white")
-        self.topLabel.pack(pady=10)
+        self.topLabel.pack(pady=5)
 
         functionLabel = tk.Label(self.root, text="Testowana funkcja", font=('Arial', 12), bg="#333333",
                                  fg="white")
         functionLabel.pack(pady=5)
 
         self.functionVar = tk.StringVar()
-        self.functionVar.set("Funkcja 1 (2 zmienne)")
+        self.functionVar.set("Goldstein and Price (2 variables)")
 
         self.functionDrop = tk.OptionMenu(self.root, self.functionVar, *functionOptions.keys())
         self.functionDrop.pack(pady=10)
         self.functionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=30)
+
+        self.numberOfVariablesEntry = EntryWithPlaceholder(self.root, placeholder="Ilosc zmiennych")
+        self.numberOfVariablesEntry.pack(pady=5)
 
         self.startEntry = EntryWithPlaceholder(self.root, placeholder="Punkt startowy - a")
         self.startEntry.pack(pady=5)
@@ -124,6 +133,17 @@ class AppGui:
         self.mutationDrop.pack()
         self.mutationDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
 
+        invserionLabel = tk.Label(self.root, text="Metoda inwersji", font=('Arial', 12), bg="#333333",
+                                 fg="white")
+        invserionLabel.pack(pady=5)
+
+        self.inversionVar = tk.StringVar()
+        self.inversionVar.set("Simple inversion")
+
+        self.inversionDrop = tk.OptionMenu(self.root, self.inversionVar, *inversionOptions.keys())
+        self.inversionDrop.pack()
+        self.inversionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
+
         param8Label = tk.Label(self.root, text="Maksymalizacja?", font=('Arial', 12), bg="#333333",
                                fg="white")
         param8Label.pack(pady=5)
@@ -136,6 +156,7 @@ class AppGui:
 
     def whenClick(self):
         placeholders = [
+            "Ilosc zmiennych"
             "Punkt startowy - a",
             "Punkt końcowy - b",
             "Liczba populacji",
@@ -150,13 +171,18 @@ class AppGui:
         ]
 
         try:
+            if self.numberOfVariablesEntry.get() not in placeholders:
+                self.numberOfVariables = int(self.numberOfVariablesEntry.get())
+            else:
+                self.numberOfVariables = 2
+
             if self.startEntry.get() not in placeholders:
-                self.start = float(self.startEntry.get())
+                self.start = int(self.startEntry.get())
             else:
                 self.start = 0
 
             if self.endEntry.get() not in placeholders:
-                self.end = float(self.endEntry.get())
+                self.end = int(self.endEntry.get())
             else:
                 self.end = 0
 
@@ -198,17 +224,19 @@ class AppGui:
             if self.inversionProbabilityEntry.get() not in placeholders:
                 self.inversionProbability = float(self.inversionProbabilityEntry.get())
             else:
-                self.inversionProbability = 0.0
+                self.inversionProbability = 0.05
 
-            population = Population(size=self.populationNumber, number_of_variables=2, chromosome_length=self.bitNumber,
+            population = Population(size=self.populationNumber, number_of_variables=self.numberOfVariables,
+                                    chromosome_length=self.bitNumber,
                                     min_value=self.start, max_value=self.end,
                                     fitness_function=FitnessFunction(functionOptions[self.functionVar.get()]),
                                     epochs=self.epochNumber, selection_percent=self.selectionPercent,
                                     elite_percent=self.elitePercent, crossover_prob=self.xProbability,
-                                    mutation_prob=self.mProbability, inverse_prob=self.inversionProbability)
+                                    mutation_prob=self.mProbability, inversion_prob=self.inversionProbability)
             population.set_selection_method(selectionOptions[self.selectionVar.get()])
             population.set_crossover_method(crossOptions[self.crossVar.get()])
             population.set_mutation_method(mutationOptions[self.mutationVar.get()])
+            population.set_inversion_method(inversionOptions[self.inversionVar.get()])
 
             print("--- Prezentacja populacji poczatkowej ---")
             population.print_individuals()
@@ -221,8 +249,11 @@ class AppGui:
             print("\n\n---Najlepsze osobniki z kazdej epoki---")
             population.print_best_individuals()
 
+        except AttributeError:
+            messagebox.showerror("Wrong number of variables", "Change the number of variables with the number corresponding to the function")
+
         except:
-            messagebox.showerror("Incorect Data", "provided data is in incorrect format")
+            messagebox.showerror("Incorect Data", "Provided data is in incorrect format")
 
     def solutionFound(self):
         # TODO wyświetlić wiadomość z wynikiem, na koniec działania alorytmu
