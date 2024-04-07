@@ -1,13 +1,11 @@
-from random import randint
-
 
 class Chromosome:
-    def __init__(self, length: int):
+    def __init__(self, length: int, genes: list[int]) -> None:
         self.length = length
-        self.genes = [randint(0, 1) for _ in range(length)]
+        self.genes = genes
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.genes)
 
-    def __repr__(self):
+    def __repr__(self) -> list[int]:
         return self.genes
