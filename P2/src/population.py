@@ -1,8 +1,8 @@
 from random import randint, sample, uniform
 from math import floor, ceil
 
-from src.fitness_function import FitnessFunction
-from src.individual import Individual
+from P2.src.fitness_function import FitnessFunction
+from P2.src.individual import Individual
 
 
 def get_sorted_individuals(individuals: list[Individual], look_for_max: bool) -> list[Individual]:

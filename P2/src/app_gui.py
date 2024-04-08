@@ -2,14 +2,14 @@ import time
 import tkinter as tk
 from tkinter import messagebox
 
-from src.algorithms.crossover_methods import CrossoverMethods
-from src.algorithms.fitness_function_methods import FitnessFunctionMethods
-from src.algorithms.inversion_methods import InversionMethods
-from src.algorithms.mutation_methods import MutationMethods
-from src.algorithms.selection_methods import SelectionMethods
-from src.entry_with_placeholder import EntryWithPlaceholder
-from src.fitness_function import FitnessFunction
-from src.population import Population
+from P2.src.algorithms.crossover_methods import CrossoverMethods
+from P2.src.algorithms.fitness_function_methods import FitnessFunctionMethods
+from P2.src.algorithms.inversion_methods import InversionMethods
+from P2.src.algorithms.mutation_methods import MutationMethods
+from P2.src.algorithms.selection_methods import SelectionMethods
+from P2.src.entry_with_placeholder import EntryWithPlaceholder
+from P2.src.fitness_function import FitnessFunction
+from P2.src.population import Population
 
 functionOptions = {
     "Goldstein and Price (2 variables)": FitnessFunctionMethods.goldstein_and_price,
@@ -51,20 +51,16 @@ class AppGui:
         self.root.title("P2 OE app")
         self.root.configure(bg="#333333")
 
-        self.topLabel = tk.Label(self.root, text="Obliczenia Ewolucyjne projekt 2", font=('Arial', 16), bg="#333333",
-                                 fg="white")
-        self.topLabel.pack(pady=5)
+        self.createLabel("Obliczenia Ewolucyjne projekt 2", 16)
 
-        functionLabel = tk.Label(self.root, text="Testowana funkcja", font=('Arial', 12), bg="#333333",
-                                 fg="white")
-        functionLabel.pack(pady=5)
+        self.createLabel("Testowana funkcja")
 
         self.functionVar = tk.StringVar()
         self.functionVar.set("Goldstein and Price (2 variables)")
 
         self.functionDrop = tk.OptionMenu(self.root, self.functionVar, *functionOptions.keys())
         self.functionDrop.pack(pady=10)
-        self.functionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=30)
+        self.configureDropdownMenu(self.functionDrop)
 
         self.numberOfVariablesEntry = EntryWithPlaceholder(self.root, placeholder="Ilosc zmiennych")
         self.numberOfVariablesEntry.pack(pady=5)
@@ -101,57 +97,46 @@ class AppGui:
         self.inversionProbabilityEntry.pack(pady=5)
 
         # Dropdown selekcji
-        selectionLabel = tk.Label(self.root, text="Metoda selekcji", font=('Arial', 12), bg="#333333",
-                                  fg="white")
-        selectionLabel.pack(pady=5)
+        self.createLabel("Metoda selekcji")
 
         self.selectionVar = tk.StringVar()
         self.selectionVar.set("Best")
 
         self.selectionDrop = tk.OptionMenu(self.root, self.selectionVar, *selectionOptions.keys())
         self.selectionDrop.pack()
-        self.selectionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
+        self.configureDropdownMenu(self.selectionDrop)
 
-        crossLabel = tk.Label(self.root, text="Metoda krzyżowania", font=('Arial', 12), bg="#333333",
-                              fg="white")
-        crossLabel.pack(pady=5)
+        self.createLabel("Metoda krzyżowania")
 
         self.crossVar = tk.StringVar()
         self.crossVar.set("Single Point")
 
         self.crossDrop = tk.OptionMenu(self.root, self.crossVar, *crossOptions.keys())
         self.crossDrop.pack()
-        self.crossDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
+        self.configureDropdownMenu(self.crossDrop)
 
-        mutationLabel = tk.Label(self.root, text="Metoda mutacji", font=('Arial', 12), bg="#333333",
-                                 fg="white")
-        mutationLabel.pack(pady=5)
+        self.createLabel("Metoda mutacji")
 
         self.mutationVar = tk.StringVar()
         self.mutationVar.set("Edge")
 
         self.mutationDrop = tk.OptionMenu(self.root, self.mutationVar, *mutationOptions.keys())
         self.mutationDrop.pack()
-        self.mutationDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
+        self.configureDropdownMenu(self.mutationDrop)
 
-        invserionLabel = tk.Label(self.root, text="Metoda inwersji", font=('Arial', 12), bg="#333333",
-                                 fg="white")
-        invserionLabel.pack(pady=5)
+        self.createLabel("Metoda inwersji")
 
         self.inversionVar = tk.StringVar()
         self.inversionVar.set("Simple inversion")
 
         self.inversionDrop = tk.OptionMenu(self.root, self.inversionVar, *inversionOptions.keys())
         self.inversionDrop.pack()
-        self.inversionDrop.config(bg="#333333", fg="white", font=('Arial', 12), width=15)
+        self.configureDropdownMenu(self.inversionDrop)
 
-        param8Label = tk.Label(self.root, text="Maksymalizacja?", font=('Arial', 12), bg="#333333",
-                               fg="white")
-        param8Label.pack(pady=5)
 
         button = tk.Button(self.root, text="Wykonaj", font=('Arial', 18), command=self.whenClick, bg="#333333",
                            fg="white")
-        button.pack()
+        button.pack(pady=10)
 
         self.root.mainloop()
 
@@ -259,3 +244,15 @@ class AppGui:
 
     def solutionFound(self, result: float):
         messagebox.showinfo("Solution found", f"Result: {result}\nTime: {self.executionTime}")
+
+    def configureDropdownMenu(self, dropdownmenu):
+        dropdownmenu.config(bg="#333333", fg="white", font=('Arial', 12), width=25, activebackground="#111111",
+                                  activeforeground="white", highlightthickness=0)
+        dropdownmenu['menu'].config(
+            bg="#333333", fg="white", font=('Arial', 12), activebackground="#111111", activeforeground="white"
+        )
+
+    def createLabel(self, text, font = 12):
+        label = tk.Label(self.root, text=text, font=('Arial', font), bg="#333333",
+                                  fg="white")
+        label.pack(pady=5)

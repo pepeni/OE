@@ -1,7 +1,7 @@
 import random
 
-from src.fitness_function import FitnessFunction
-from src.individual import Individual
+from P2.src.fitness_function import FitnessFunction
+from P2.src.individual import Individual
 
 
 class CrossoverMethods:

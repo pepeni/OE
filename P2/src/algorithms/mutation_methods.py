@@ -1,6 +1,6 @@
 import random
 
-from src.individual import Individual
+from P2.src.individual import Individual
 
 
 class MutationMethods:
