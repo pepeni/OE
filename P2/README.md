@@ -34,3 +34,6 @@ population.evolve()
 - Selekcja: Best
 - Krzyzowanie: Difference based
 - Mutacja: Double Point
+
+## Link do sprawozdania
+- https://docs.google.com/document/d/1qrqLNccACs7av_RQvni-39oxi0MXc2eedHZYH7W2F4g/edit?usp=sharing
