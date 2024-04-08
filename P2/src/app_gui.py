@@ -46,6 +46,16 @@ inversionOptions = {
 }
 
 
+def create_directories():
+    output_data_path = 'output_data'
+    iterations_path = os.path.join(output_data_path, 'iterations')
+    plots_path = os.path.join(output_data_path, 'plots')
+
+    for path in [output_data_path, iterations_path, plots_path]:
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+
 class AppGui:
     def __init__(self):
         self.root = tk.Tk()
@@ -227,15 +237,13 @@ class AppGui:
             population.set_inversion_method(inversionOptions[self.inversionVar.get()])
 
             start_time = time.time()
-
             population.evolve()
+            end_time = time.time()
 
-            if not os.path.exists("plots"):
-                os.makedirs("plots")
+            create_directories()
+            population.save_to_file_every_iteration("output_data/iterations/results.txt")
             population.plot_iteration_values()
             population.plot_average_and_std_deviation()
-
-            end_time = time.time()
 
             self.executionTime = end_time - start_time
             self.solutionFound(population.get_best_individual().fitness_value)
