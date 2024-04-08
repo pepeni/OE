@@ -1,5 +1,5 @@
-from P2.src.chromosome import Chromosome
-from P2.src.fitness_function import FitnessFunction
+from src.chromosome import Chromosome
+from src.fitness_function import FitnessFunction
 
 
 class Individual:

@@ -1,15 +1,17 @@
 import time
 import tkinter as tk
 from tkinter import messagebox
+import os
 
-from P2.src.algorithms.crossover_methods import CrossoverMethods
-from P2.src.algorithms.fitness_function_methods import FitnessFunctionMethods
-from P2.src.algorithms.inversion_methods import InversionMethods
-from P2.src.algorithms.mutation_methods import MutationMethods
-from P2.src.algorithms.selection_methods import SelectionMethods
-from P2.src.entry_with_placeholder import EntryWithPlaceholder
-from P2.src.fitness_function import FitnessFunction
-from P2.src.population import Population
+
+from src.algorithms.crossover_methods import CrossoverMethods
+from src.algorithms.fitness_function_methods import FitnessFunctionMethods
+from src.algorithms.inversion_methods import InversionMethods
+from src.algorithms.mutation_methods import MutationMethods
+from src.algorithms.selection_methods import SelectionMethods
+from src.entry_with_placeholder import EntryWithPlaceholder
+from src.fitness_function import FitnessFunction
+from src.population import Population
 
 functionOptions = {
     "Goldstein and Price (2 variables)": FitnessFunctionMethods.goldstein_and_price,
@@ -227,6 +229,11 @@ class AppGui:
             start_time = time.time()
 
             population.evolve()
+
+            if not os.path.exists("plots"):
+                os.makedirs("plots")
+            population.plot_iteration_values()
+            population.plot_average_and_std_deviation()
 
             end_time = time.time()
 

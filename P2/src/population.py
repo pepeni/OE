@@ -1,8 +1,11 @@
 from random import randint, sample, uniform
 from math import floor, ceil
+import matplotlib.pyplot as plt
+import numpy as np
+import os
 
-from P2.src.fitness_function import FitnessFunction
-from P2.src.individual import Individual
+from src.fitness_function import FitnessFunction
+from src.individual import Individual
 
 
 def get_sorted_individuals(individuals: list[Individual], look_for_max: bool) -> list[Individual]:
@@ -19,7 +22,7 @@ def select_random_parents(individuals: list[Individual]) -> tuple[Individual, In
 class Population:
     def __init__(self, size: int, number_of_variables: int, chromosome_length: int, min_value: int, max_value: int,
                  fitness_function: FitnessFunction, epochs: int, selection_percent=0.5, elite_percent=0.1,
-                 crossover_prob=0.8, mutation_prob=0.1, inversion_prob=0.05, look_for_max=False) -> None:
+                 crossover_prob=0.8, mutation_prob=0.1, inversion_prob=0.05, look_for_max=False, output_file="results.txt") -> None:
         self.size = size
         self.chromosome_length = chromosome_length
         self.min_value = min_value
@@ -35,7 +38,10 @@ class Population:
         self.inversion_prob = inversion_prob
         self.look_for_max = look_for_max
         self.best_individuals = []
-
+        self.average_values = []    
+        self.std_deviation_values = []  
+        self.output_file = output_file
+ 
         self.individuals = [
             Individual(
                 chromosome_length,
@@ -96,28 +102,44 @@ class Population:
         self.individuals = sorted_individuals[self.number_elite:]
 
     def evolve(self):
-        for epoch in range(self.epochs):
-            self.set_elite_individuals()
-            selected_individuals = self.select_individuals()
-            self.individuals = []
+        with open(self.output_file, 'w') as f:  
+            f.write("Iteration,Fitness,MeanFitness,StdDeviation\n")
+            for epoch in range(self.epochs):
+                self.set_elite_individuals()
+                selected_individuals = self.select_individuals()
+                self.individuals = []
 
-            while len(self.individuals) < self.size - self.number_elite:
-                parent1, parent2 = select_random_parents(selected_individuals)
-                if self.crossover_prob >= uniform(0, 1):
-                    child1, child2 = self.crossover_individuals(parent1, parent2)
-                    self.individuals.append(child1)
-                    if len(self.individuals) == self.size - self.number_elite:
-                        break
-                    self.individuals.append(child2)
+                while len(self.individuals) < self.size - self.number_elite:
+                    parent1, parent2 = select_random_parents(selected_individuals)
+                    if self.crossover_prob >= uniform(0, 1):
+                        child1, child2 = self.crossover_individuals(parent1, parent2)
+                        self.individuals.append(child1)
+                        if len(self.individuals) == self.size - self.number_elite:
+                            break
+                        self.individuals.append(child2)
 
-            for individual in self.individuals:
-                self.mutate_individual(individual, self.mutation_prob)
-                self.invert_individual(individual, self.inversion_prob)
+                for individual in self.individuals:
+                    self.mutate_individual(individual, self.mutation_prob)
+                    self.invert_individual(individual, self.inversion_prob)
 
-            for individual in self.elite_individuals:
-                self.individuals.append(individual)
+                for individual in self.elite_individuals:
+                    self.individuals.append(individual)
 
-            self.best_individuals.append(self.get_best_individual())
+                self.best_individuals.append(self.get_best_individual())
+
+                current_fitness_values = [individual.fitness_value for individual in self.individuals]
+
+                average_value = np.mean(current_fitness_values)
+                self.average_values.append(average_value)
+
+                std_deviation = np.std(current_fitness_values)
+                self.std_deviation_values.append(std_deviation)
+
+                fitness = self.get_best_individual().fitness_value
+                mean = np.mean([individual.fitness_value for individual in self.individuals])
+                std = np.std([individual.fitness_value for individual in self.individuals])
+                f.write(f"{epoch + 1},{fitness},{mean},{std}\n")
+            #------------------
 
     def print_individuals(self):
         for ind in self.individuals:
@@ -126,6 +148,33 @@ class Population:
     def print_best_individuals(self):
         for i, ind in enumerate(self.best_individuals):
             print(f'Epoka {i + 1}: {ind.__repr__(), ind.decoded_values, ind.fitness_value}')
+
+    def plot_iteration_values(self):
+        iterations = range(1, len(self.average_values) + 1)
+        plt.plot(iterations, [individual.fitness_value for individual in self.best_individuals], label='Najlepsza wartość funkcji')
+        plt.xlabel('Iteracja')
+        plt.ylabel('Wartość')
+        plt.title('Najlepsza wartość funkcji od kolejnej iteracji')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(os.path.join("plots", "best_fitness.png"))
+        plt.show()
+
+    def plot_average_and_std_deviation(self):
+        iterations = range(1, len(self.average_values) + 1)
+        plt.plot(iterations, self.average_values, label='Średnia wartość funkcji')
+        plt.fill_between(iterations, 
+                         np.subtract(self.average_values, self.std_deviation_values),
+                         np.add(self.average_values, self.std_deviation_values),
+                         color='gray', alpha=0.2, label='Odchylenie standardowe')
+        plt.xlabel('Iteracja')
+        plt.ylabel('Wartość')
+        plt.title('Średnia wartość funkcji i odchylenie standardowe od kolejnej iteracji')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(os.path.join("plots", "average_std_deviation.png"))
+        plt.show()
+    
 
     def __str__(self):
         return "\n".join(str(individual) for individual in self.individuals)
