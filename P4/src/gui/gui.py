@@ -35,7 +35,8 @@ crossOptions = {
 
 mutationOptions = {
     "Uniform": MutationMethods.uniform_mutation,
-    "Gauss": MutationMethods.gauss_mutation,
+    "Index": MutationMethods.index_mutation,
+    "Gauss": MutationMethods.gauss_mutation
 }
 
 inversionOptions = {
