@@ -7,17 +7,17 @@ from src.individual import Individual
 
 class CrossoverMethods:
     @staticmethod
-    def arithmetic_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def arithmetic_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass
 
     @staticmethod
-    def linear_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def linear_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                          fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass
 
     @staticmethod
-    def mixed_alfa_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def mixed_alfa_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         alpha = 0.25
         genes_length = len(parent1.genes)
@@ -35,26 +35,26 @@ class CrossoverMethods:
         return individual_child1, individual_child2
 
     @staticmethod
-    def mixed_alfa_beta_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def mixed_alfa_beta_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass
 
     @staticmethod
-    def averaging_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def averaging_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass
 
     @staticmethod
-    def geometric_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def geometric_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass
 
     @staticmethod
-    def guided_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def guided_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass
 
     @staticmethod
-    def diverse_crossover(parent1: Individual, parent2: Individual, min_value: int, max_value: int,
+    def diverse_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass

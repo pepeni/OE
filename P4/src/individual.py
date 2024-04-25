@@ -2,7 +2,7 @@ from src.fitness_function import FitnessFunction
 
 
 class Individual:
-    def __init__(self, min_value: int, max_value: int, fitness_function: FitnessFunction,
+    def __init__(self, min_value: float, max_value: float, fitness_function: FitnessFunction,
                  genes: list[float]) -> None:
         self.min_value = min_value
         self.max_value = max_value
