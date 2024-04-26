@@ -121,4 +121,28 @@ class CrossoverMethods:
     @staticmethod
     def diverse_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
-        pass
+        beta = 0.5
+        genes_length = len(parent1.genes)
+        random_gene = random.randint(1, genes_length - 1)
+        child1 = [0.] * genes_length
+        child2 = [0.] * genes_length
+        domain_lower = min(parent1.genes)
+        domain_upper = max(parent1.genes)
+
+        for i in range(random_gene):
+            child1[i] = parent1.genes[i]
+            child2[i] = parent2.genes[i]
+
+        gene1 = parent1.genes[random_gene] + (
+                    parent2.genes[random_gene] - parent1.genes[random_gene]) * beta
+        gene2 = domain_lower + beta * (domain_upper - domain_lower)
+        child1[random_gene] = gene1
+        child2[random_gene] = gene2
+
+        for i in range(random_gene + 1, genes_length):
+            child1[i] = parent2.genes[i]
+            child2[i] = parent1.genes[i]
+
+        individual_child1 = Individual(min_value, max_value, fitness_function, child1)
+        individual_child2 = Individual(min_value, max_value, fitness_function, child2)
+        return individual_child1, individual_child2
