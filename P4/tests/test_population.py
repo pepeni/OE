@@ -1,6 +1,6 @@
 import unittest
-from src.population import Population
-from src.fitness_function import FitnessFunction
+from P4.src.population import Population
+from P4.src.fitness_function import FitnessFunction
 
 
 def func_x(values: list[float]):

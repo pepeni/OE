@@ -3,12 +3,12 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 
-from src.algorithms.crossover_methods import CrossoverMethods
-from src.algorithms.fitness_function_methods import FitnessFunctionMethods
-from src.algorithms.inversion_methods import InversionMethods
-from src.algorithms.mutation_methods import MutationMethods
-from src.algorithms.selection_methods import SelectionMethods
-from src.gui.entry_with_placeholder import EntryWithPlaceholder
+from P4.src.algorithms.crossover_methods import CrossoverMethods
+from P4.src.algorithms.fitness_function_methods import FitnessFunctionMethods
+from P4.src.algorithms.inversion_methods import InversionMethods
+from P4.src.algorithms.mutation_methods import MutationMethods
+from P4.src.algorithms.selection_methods import SelectionMethods
+from P4.src.gui.entry_with_placeholder import EntryWithPlaceholder
 
 functionOptions = {
     "Goldstein and Price (2 variables)": FitnessFunctionMethods.goldstein_and_price,
@@ -222,19 +222,19 @@ class Gui:
             # population.set_crossover_method(crossOptions[self.crossVar.get()])
             # population.set_mutation_method(mutationOptions[self.mutationVar.get()])
             # population.set_inversion_method(inversionOptions[self.inversionVar.get()])
-            # 
+            #
             # start_time = time.time()
             # population.evolve()
             # end_time = time.time()
-            # 
+            #
             # create_directories()
             # population.save_to_file_every_iteration("output_data/iterations/results.txt")
             # population.plot_iteration_values()
             # population.plot_average_and_std_deviation()
-            # 
+            #
             # self.executionTime = end_time - start_time
             # self.solutionFound(population.get_best_individual().fitness_value)
-            # 
+            #
             # print("\n\n---Najlepsze osobniki z kazdej epoki---")
             # population.print_best_individuals()
 

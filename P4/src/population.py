@@ -7,8 +7,8 @@ import statistics
 import numpy as np
 import os
 
-from src.fitness_function import FitnessFunction
-from src.individual import Individual
+from P4.src.fitness_function import FitnessFunction
+from P4.src.individual import Individual
 
 
 def get_sorted_individuals(individuals: list[Individual], look_for_max: bool) -> list[Individual]:

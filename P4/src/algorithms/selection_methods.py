@@ -1,8 +1,8 @@
 import copy
 import random
 
-from src.individual import Individual
-from src.population import get_sorted_individuals
+from P4.src.individual import Individual
+from P4.src.population import get_sorted_individuals
 
 
 class SelectionMethods:

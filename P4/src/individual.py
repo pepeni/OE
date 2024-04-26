@@ -1,4 +1,4 @@
-from src.fitness_function import FitnessFunction
+from P4.src.fitness_function import FitnessFunction
 
 
 class Individual:

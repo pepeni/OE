@@ -1,4 +1,4 @@
-from src.individual import Individual
+from P4.src.individual import Individual
 
 
 class InversionMethods:
