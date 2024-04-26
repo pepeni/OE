@@ -27,7 +27,6 @@ crossOptions = {
     "Mixed alfa": CrossoverMethods.mixed_alfa_crossover,
     "Mixed alfa & beta": CrossoverMethods.mixed_alfa_beta_crossover,
     "Averaging": CrossoverMethods.averaging_crossover,
-    "Seed": CrossoverMethods.seed_crossover,
     "Geometric": CrossoverMethods.geometric_crossover,
     "Guided": CrossoverMethods.guided_crossover,
     "Diverse": CrossoverMethods.diverse_crossover

@@ -114,11 +114,6 @@ class CrossoverMethods:
         return individual_child1, individual_child2
 
     @staticmethod
-    def seed_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
-                         fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
-        pass
-
-    @staticmethod
     def guided_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
                              fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         pass
