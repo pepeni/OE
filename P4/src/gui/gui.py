@@ -8,7 +8,9 @@ from P4.src.algorithms.fitness_function_methods import FitnessFunctionMethods
 from P4.src.algorithms.inversion_methods import InversionMethods
 from P4.src.algorithms.mutation_methods import MutationMethods
 from P4.src.algorithms.selection_methods import SelectionMethods
+from P4.src.fitness_function import FitnessFunction
 from P4.src.gui.entry_with_placeholder import EntryWithPlaceholder
+from P4.src.population import Population
 
 functionOptions = {
     "Goldstein and Price (2 variables)": FitnessFunctionMethods.goldstein_and_price,
@@ -167,14 +169,14 @@ class Gui:
                 self.numberOfVariables = 2
 
             if self.startEntry.get() not in placeholders:
-                self.start = int(self.startEntry.get())
+                self.start = float(self.startEntry.get())
             else:
-                self.start = 0
+                self.start = 0.0
 
             if self.endEntry.get() not in placeholders:
-                self.end = int(self.endEntry.get())
+                self.end = float(self.endEntry.get())
             else:
-                self.end = 0
+                self.end = 0.0
 
             if self.populationNumberEntry.get() not in placeholders:
                 self.populationNumber = int(self.populationNumberEntry.get())
@@ -211,31 +213,31 @@ class Gui:
             else:
                 self.inversionProbability = 0.05
 
-            # population = Population(size=self.populationNumber, number_of_variables=self.numberOfVariables,
-            #                         min_value=self.start, max_value=self.end,
-            #                         fitness_function=FitnessFunction(functionOptions[self.functionVar.get()]),
-            #                         epochs=self.epochNumber, selection_percent=self.selectionPercent,
-            #                         elite_percent=self.elitePercent, crossover_prob=self.xProbability,
-            #                         mutation_prob=self.mProbability, inversion_prob=self.inversionProbability)
-            # population.set_selection_method(selectionOptions[self.selectionVar.get()])
-            # population.set_crossover_method(crossOptions[self.crossVar.get()])
-            # population.set_mutation_method(mutationOptions[self.mutationVar.get()])
-            # population.set_inversion_method(inversionOptions[self.inversionVar.get()])
-            #
-            # start_time = time.time()
-            # population.evolve()
-            # end_time = time.time()
-            #
-            # create_directories()
-            # population.save_to_file_every_iteration("output_data/iterations/results.txt")
-            # population.plot_iteration_values()
-            # population.plot_average_and_std_deviation()
-            #
-            # self.executionTime = end_time - start_time
-            # self.solutionFound(population.get_best_individual().fitness_value)
-            #
-            # print("\n\n---Najlepsze osobniki z kazdej epoki---")
-            # population.print_best_individuals()
+            population = Population(size=self.populationNumber, number_of_variables=self.numberOfVariables,
+                                    min_value=self.start, max_value=self.end,
+                                    fitness_function=FitnessFunction(functionOptions[self.functionVar.get()]),
+                                    epochs=self.epochNumber, selection_percent=self.selectionPercent,
+                                    elite_percent=self.elitePercent, crossover_prob=self.xProbability,
+                                    mutation_prob=self.mProbability, inversion_prob=self.inversionProbability)
+            population.set_selection_method(selectionOptions[self.selectionVar.get()])
+            population.set_crossover_method(crossOptions[self.crossVar.get()])
+            population.set_mutation_method(mutationOptions[self.mutationVar.get()])
+            population.set_inversion_method(inversionOptions[self.inversionVar.get()])
+
+            start_time = time.time()
+            population.evolve()
+            end_time = time.time()
+
+            create_directories()
+            population.save_to_file_every_iteration("output_data/iterations/results.txt")
+            population.plot_iteration_values()
+            population.plot_average_and_std_deviation()
+
+            self.executionTime = end_time - start_time
+            self.solutionFound(population.get_best_individual().fitness_value)
+
+            print("\n\n---Najlepsze osobniki z kazdej epoki---")
+            population.print_best_individuals()
 
         except AttributeError:
             messagebox.showerror("Wrong number of variables", "Change the number of variables with the number corresponding to the function")
