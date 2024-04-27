@@ -4,7 +4,7 @@ import numpy as np
 
 class FitnessFunctionMethods:
     @staticmethod
-    def goldstein_and_price(values: list[float]) -> float:
+    def goldstein_and_price(values: list[float], ndim: int) -> float:
         if len(values) != 2:
             raise AttributeError
         x0, x1 = values

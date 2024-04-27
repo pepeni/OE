@@ -29,4 +29,4 @@ class MutationMethods:
                 norm_sample = np.random.normal(0, 1, 1)
                 while individual.genes[i] + norm_sample[0] < min_value or individual.genes[i] + norm_sample[0] > max_value:
                     norm_sample = np.random.normal(0, 1, 1)
-                individual.genes[i] += norm_sample
+                individual.genes[i] += norm_sample[0]

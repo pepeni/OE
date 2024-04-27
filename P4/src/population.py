@@ -54,10 +54,10 @@ class Population:
         ]
         self.elite_individuals = None
 
-        self.selection_method = None
-        self.crossover_method = None
-        self.mutation_method = None
-        self.inversion_method = None
+        self.selection_method: Callable[[list[Individual], int, bool], list[Individual]] | None = None
+        self.crossover_method: Callable[[Individual, Individual, float, float, FitnessFunction], tuple[Individual, Individual]] | None = None
+        self.mutation_method: Callable[[Individual, float, float, float], None] | None = None
+        self.inversion_method: Callable[[Individual, float], None] | None = None
 
     def get_individual(self, index) -> Individual:
         return self.individuals[index]
@@ -68,26 +68,26 @@ class Population:
     def get_size(self) -> int:
         return self.size
 
-    def set_selection_method(self, method: Callable) -> None:
+    def set_selection_method(self, method: Callable[[list[Individual], int, bool], list[Individual]]) -> None:
         self.selection_method = method
 
-    def set_crossover_method(self, method: Callable) -> None:
+    def set_crossover_method(self, method: Callable[[Individual, Individual, float, float, FitnessFunction], tuple[Individual, Individual]]) -> None:
         self.crossover_method = method
 
-    def set_mutation_method(self, method: Callable) -> None:
+    def set_mutation_method(self, method: Callable[[Individual, float, float, float], None]) -> None:
         self.mutation_method = method
 
-    def set_inversion_method(self, method: Callable) -> None:
+    def set_inversion_method(self, method: Callable[[Individual, float], None]) -> None:
         self.inversion_method = method
 
     def select_individuals(self) -> list[Individual]:
-        return self.selection_method(self.individuals, self.number_to_select)
+        return self.selection_method(self.individuals, self.number_to_select, self.look_for_max)
 
     def crossover_individuals(self, parent1: Individual, parent2: Individual) -> tuple[Individual, Individual]:
         return self.crossover_method(parent1, parent2, self.min_value, self.max_value, self.fitness_function)
 
     def mutate_individual(self, individual: Individual, probability: float) -> None:
-        return self.mutation_method(individual, probability)
+        return self.mutation_method(individual, probability, self.min_value, self.max_value)
 
     def invert_individual(self, individual: Individual, probability: float) -> None:
         return self.inversion_method(individual, probability)

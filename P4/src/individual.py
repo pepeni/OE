@@ -11,7 +11,7 @@ class Individual:
         self.fitness_value = self.evaluate_fitness()
 
     def evaluate_fitness(self) -> float:
-        return self.fitness_function.evaluate(self.genes)
+        return self.fitness_function.evaluate(self.genes, len(self.genes))
 
     def get_genes(self) -> list[float]:
         return self.genes

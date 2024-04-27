@@ -69,7 +69,7 @@ class CrossoverMethods:
 
     @staticmethod
     def mixed_alfa_beta_crossover(parent1: Individual, parent2: Individual, min_value: float, max_value: float,
-                             fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
+                                  fitness_function: FitnessFunction) -> tuple[Individual, Individual]:
         alpha = 0.25
         beta = 0.7
         genes_length = len(parent1.genes)
