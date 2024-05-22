@@ -1,0 +1,1 @@
+https://pygad.readthedocs.io/en/latest/pygad.html#pygad-ga-class
