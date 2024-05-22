@@ -6,7 +6,7 @@ from P5.src.aggreate_results import summary
 from P5.src.algorithms.crossover_methods_real import arithmetic_crossover, linear_crossover, mixed_alfa_crossover, \
     mixed_alfa_beta_crossover, averaging_crossover, geometric_crossover, diverse_crossover
 from P5.src.algorithms.mutation_methods_real import gauss_mutation
-from P5.src.on_generation_method import on_generation
+from P5.src.on_generation import on_generation, create_directories, do_plots
 
 
 def goldstein_and_price_real(ga_instance, solution: list[float], solution_idx) -> float:
@@ -81,9 +81,11 @@ if __name__ == '__main__':
         parent_selection_type=selection_methods["tournament"],
         crossover_type="uniform",
         mutation_type=mutation_methods["random"],
-        on_generation=on_generation,
         K_tournament=3,
+        on_generation=on_generation
     )
 
     ga_instance.run()
     summary(ga_instance)
+    create_directories()
+    do_plots(num_generations)

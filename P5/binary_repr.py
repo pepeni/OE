@@ -4,7 +4,7 @@ from opfunu import cec_based
 
 from P5.src.aggreate_results import summary
 from P5.src.algorithms.crossover_methods_binary import difference_based_crossover, dissociated_crossover
-from P5.src.on_generation_method import on_generation
+from P5.src.on_generation import on_generation, create_directories, do_plots
 
 min_value = -100.0
 max_value = 100.0
@@ -95,3 +95,5 @@ if __name__ == '__main__':
 
     ga_instance.run()
     summary(ga_instance)
+    create_directories()
+    do_plots(num_generations)
