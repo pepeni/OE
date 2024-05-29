@@ -51,12 +51,13 @@ if __name__ == "__main__":
 
     create_directories()
 
-    fitness_function_name = "goldstein_and_price_binary"
-    epochs = 200
-    pop_size = 100
+    fitness_function_name = "weierstrass_binary"
+    epochs = 150
+    pop_size = 50
     rr_values = np.linspace(0.1, 0.9, num=9)
 
-    floatVar = FloatVar(lb=(-2.,) * 2, ub=(2.,) * 2, name="delta")
+    # floatVar = FloatVar(lb=(-2.,) * 2, ub=(2.,) * 2, name="delta") # goldstein & price
+    floatVar = FloatVar(lb=(-100.,) * 10, ub=(100.,) * 10, name="delta") # weierstrass
     problem_dict = {
         "bounds": floatVar,
         "minmax": "min",
