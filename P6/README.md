@@ -1,0 +1,3 @@
+Research paper War Strategy Optimization:
+https://www.researchgate.net/publication/357711089_Parameter_estimation_of_solar_PV_models_with_a_new_proposed_war_strategy_optimization_algorithm
+
