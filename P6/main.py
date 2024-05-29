@@ -42,8 +42,8 @@ def create_directories():
 
 
 fitness_functions = {
-    "goldstein_and_price_binary": goldstein_and_price,
-    "weierstrass_binary": weierstrass
+    "goldstein_and_price": goldstein_and_price,
+    "weierstrass": weierstrass
 }
 
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     create_directories()
 
-    fitness_function_name = "weierstrass_binary"
+    fitness_function_name = "weierstrass"
     epochs = 150
     pop_size = 50
     rr_values = np.linspace(0.1, 0.9, num=9)
