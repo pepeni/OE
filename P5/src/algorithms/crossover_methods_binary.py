@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def dissociated_crossover(parents, offspring_size, ga_instance):
     offspring = []
     idx = 0

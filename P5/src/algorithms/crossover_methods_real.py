@@ -16,7 +16,6 @@ def arithmetic_crossover(parents, offspring_size, ga_instance):
     return np.array(offspring[:offspring_size[0]])
 
 
-
 def linear_crossover(parents, offspring_size, ga_instance):
     offspring = []
     idx = 0
@@ -31,7 +30,6 @@ def linear_crossover(parents, offspring_size, ga_instance):
         offspring.append(geneX)
         idx += 1
     return np.array(offspring[:offspring_size[0]])
-
 
 
 def mixed_alfa_crossover(parents, offspring_size, ga_instance):
@@ -49,7 +47,6 @@ def mixed_alfa_crossover(parents, offspring_size, ga_instance):
         offspring.append(child2)
         idx += 1
     return np.array(offspring[:offspring_size[0]])
-
 
 
 def mixed_alfa_beta_crossover(parents, offspring_size, ga_instance):
@@ -70,7 +67,6 @@ def mixed_alfa_beta_crossover(parents, offspring_size, ga_instance):
     return np.array(offspring[:offspring_size[0]])
 
 
-
 def averaging_crossover(parents, offspring_size, ga_instance):
     offspring = []
     idx = 0
@@ -84,7 +80,6 @@ def averaging_crossover(parents, offspring_size, ga_instance):
     return np.array(offspring[:offspring_size[0]])
 
 
-
 def geometric_crossover(parents, offspring_size, ga_instance):
     offspring = []
     idx = 0
@@ -96,7 +91,6 @@ def geometric_crossover(parents, offspring_size, ga_instance):
         offspring.append(child.copy())
         idx += 1
     return np.array(offspring[:offspring_size[0]])
-
 
 
 def diverse_crossover(parents, offspring_size, ga_instance):

@@ -86,6 +86,7 @@ if __name__ == '__main__':
     )
 
     ga_instance.run()
+
     summary(ga_instance)
     create_directories()
     do_plots(num_generations)
